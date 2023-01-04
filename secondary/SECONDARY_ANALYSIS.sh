@@ -16,6 +16,7 @@ for LIB_NO in 1 2 3 4; do
     #LIB_NO="1"
     PRJ_NAME="Screen1_66guides"
     LIBRARY_NAME="Lib_${LIB_NO}"
+    LIBRARY_NAME_SHORT="L_${LIB_NO}"
     H5_FILE_NAME="${PRJ_NAME}_${LIBRARY_NAME}.h5seurat"
 
     PRJ_PATH="/home/vsevim/prj/1012-ckd/S1/"
@@ -26,6 +27,7 @@ for LIB_NO in 1 2 3 4; do
     SECONDARY_A_OUT_PATH="${PRJ_PATH}/analysis/secondary/${LIBRARY_NAME}/"
     SEURAT_OBJ_PATH="$SECONDARY_A_OUT_PATH/seurat_objects/"
     NOTEBOOK_OUT_PATH="$SECONDARY_A_OUT_PATH/notebooks/"
+    SOUPORCELL_CLUSTERS_PATH="${PRJ_PATH}/analysis/primary/souporcell/${LIBRARY_NAME}/clusters.tsv"
 
     mkdir -p ${NOTEBOOK_OUT_PATH}
     mkdir -p ${SEURAT_OBJ_PATH}
@@ -49,6 +51,7 @@ for LIB_NO in 1 2 3 4; do
         -p prj_name ${PRJ_NAME}    \
         -p prj_path ${PRJ_PATH}    \
         -p data_subdir ${CELLRANGER_OUT_SUBDIR}  \
+        -p souporcell_clusters_path ${SOUPORCELL_CLUSTERS_PATH} \
         -p seurat_obj_path ${SEURAT_OBJ_PATH} \
         -p seurat_obj_fname ${H5_FILE_NAME} \
         -p library_name ${LIBRARY_NAME} \

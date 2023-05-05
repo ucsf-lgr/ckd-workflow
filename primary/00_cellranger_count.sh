@@ -38,6 +38,7 @@ do
                 --localcores=40 \
                 --localmem=400 \
                 --no-bam \
+                --nosecondary \
                 --disable-ui \
                 --expect-cells=10000 \
                 > "$log_path/$LOG" 2> "$log_path/$ERR"                

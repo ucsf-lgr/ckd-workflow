@@ -60,7 +60,14 @@ mark_guide_pos_target_neg <- function(seurat_obj, perturbed_cells_by_guide, the_
 
 
 # Mark cells that are positive for given guides as target_positive, all others as target_negative
-mark_target_pos_neg <- function(seurat_obj, perturbed_cells_by_guide, guides, print_counts = T) {
+mark_target_pos_neg <- function(
+    seurat_obj, 
+    perturbed_cells_by_guide, 
+    guides, 
+    print_counts = T, 
+    pos_label = "target_positive", 
+    neg_label = "target_negative"
+) {
     all_cells = Cells(seurat_obj)
     perturbed_cells = c()
     dummy_perturbed = c()
@@ -68,12 +75,15 @@ mark_target_pos_neg <- function(seurat_obj, perturbed_cells_by_guide, guides, pr
     for(guide in guides) {
         dummy_perturbed = unlist(perturbed_cells_by_guide[[guide]])
         perturbed_cells = union(perturbed_cells, dummy_perturbed)    
-        #cat(guide," ", length(perturbed_cells), "\n")
+        cat(guide," ", length(perturbed_cells), "\n")
     }
 
     unperturbed_cells = unlist(setdiff(all_cells, perturbed_cells))
-    Idents(seurat_obj) <- "target_negative"
-    seurat_obj <- SetIdent(seurat_obj, cells = perturbed_cells, value = "target_positive") 
+    Idents(seurat_obj) <- neg_label
+
+    if(length(perturbed_cells) > 0) {
+        seurat_obj <- SetIdent(seurat_obj, cells = perturbed_cells, value = pos_label) 
+    }
 
     if(print_counts) {
         n_gplus   = length(perturbed_cells)
@@ -179,6 +189,46 @@ vlnplot_for_targets <- function(seurat_obj, df_guide, perturbed_cells_by_guide, 
     plt_list
 }
 
+
+
+# Produce Vlnplot for plasmids
+vlnplot_for_plasmids <- function(seurat_obj, df_guides, perturbed_cells_by_guide) {
+    plt_list = list()
+
+    for(i in 1:nrow(df_guides)){
+        target = df_guides[i, 'alias']
+        guides_on_plasmid = unlist(as.list(t(df_guides[i, c('guide1', 'guide2')])))
+
+        cat(blue(target, ":"), paste(guides_on_plasmid, collapse=","),"\n")
+        seurat_dummy <- mark_target_pos_neg(
+            seurat_rna, 
+            perturbed_cells_by_guide, 
+            guides_on_plasmid, 
+            print_counts = T,
+            pos_label = "plasmid_positive",
+            neg_label = "plasmid_negative"
+        )
+
+        options(repr.plot.width=5, repr.plot.height=4)
+        plt <- VlnPlot(
+            object = seurat_dummy,
+            features =  target, 
+            idents = NULL, 
+            pt.size = 0., 
+            sort = F, 
+            ncol = 1,    
+        ) + 
+        geom_boxplot(width=1, color="black", alpha=0.2) + 
+        theme(legend.position = 'none', plot.subtitle = element_text(hjust = 0.5)) +
+        labs(subtitle = paste0("Guides: ", guides_on_plasmid[1], ",b"))
+
+        plt_list[[i]] = plt
+    }
+    plt_list
+}
+
+
+
 # Produce RidgePlot for given targets
 ridgeplot_for_targets <- function(seurat_obj, df_guide, perturbed_cells_by_guide, targets) {
     plt_list = list()
@@ -207,8 +257,10 @@ ridgeplot_for_targets <- function(seurat_obj, df_guide, perturbed_cells_by_guide
 }
 
 # Get perturbed cells
-get_perturbed_cells <- function(seurat_obj, donor_id) {
-    seurat_obj = subset(seurat_obj, subset = donor == donor_id)
+get_perturbed_cells <- function(seurat_obj, df_thresholds, donor_id = NULL) {
+    if(! is.null(donor_id)) {
+        seurat_obj = subset(seurat_obj, subset = donor == donor_id)
+    }
     libraries = unique(seurat_obj$library)
     seurat_libs = list()
 
@@ -231,6 +283,35 @@ get_perturbed_cells <- function(seurat_obj, donor_id) {
             sgrna_counts = seurat_lib[['sgRNA']]@counts
             select_perturbed = sgrna_counts[guide, cells_in_lib] >= threshold
             perturbed_cells_in_library = cells_in_lib[select_perturbed]
+            #cat(length(cells_in_lib), "in", lib, guide, length(perturbed_cells_in_library), "cells >", threshold, "\n")                    
+            if(!is.na(threshold)) {
+             perturbed_cells_in_all_libs = append(perturbed_cells_in_all_libs, perturbed_cells_in_library)
+            }
+
+        }
+        perturbed_cells_by_guide[[i]] = perturbed_cells_in_all_libs
+    }
+    names(perturbed_cells_by_guide) <- df_thresholds$guide
+    perturbed_cells_by_guide
+}
+
+
+# This function is somewhat redundant. It runs on a list of Seurat objects
+get_all_perturbed_cells_by_guide <- function(seurat_obj_libs) {
+    perturbed_cells_by_guide = list()
+
+    for(i in 1:nrow(df_thresholds)){  
+        perturbed_cells_in_all_libs = list()
+        guide = df_thresholds$guide[i]
+        # Loop over libraries
+        for(lib in libraries){        
+            seurat_lib = seurat_obj_libs[[lib]]
+            threshold = df_thresholds[i, lib]        
+            #cat(blue(guide, lib, threshold, "\n"))
+            cells_in_lib = Cells(seurat_lib)        
+            sgrna_counts = seurat_lib[['sgRNA']]@counts
+            select_perturbed = sgrna_counts[guide, cells_in_lib] >= threshold
+            perturbed_cells_in_library = cells_in_lib[select_perturbed]
             #cat(length(cells_in_lib), "in", lib, guide, length(perturbed_cells_in_library), "cells >", threshold, "\n")        
             perturbed_cells_in_all_libs = append(perturbed_cells_in_all_libs, perturbed_cells_in_library)
         }
@@ -239,3 +320,5 @@ get_perturbed_cells <- function(seurat_obj, donor_id) {
     names(perturbed_cells_by_guide) <- df_thresholds$guide
     perturbed_cells_by_guide
 }
+
+

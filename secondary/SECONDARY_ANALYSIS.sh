@@ -1,5 +1,5 @@
 #!/bin/bash
-set -euo pipefail
+#set -euo pipefail
 
 txtred=$'\e[0;31m' # Red
 txtgrn=$'\e[0;32m' # Green

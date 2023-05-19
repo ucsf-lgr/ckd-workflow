@@ -183,7 +183,7 @@ vlnplot_for_targets <- function(seurat_obj, df_guide, perturbed_cells_by_guide, 
             pt.size = 0., 
             sort = F, 
             ncol = 1,    
-        ) + geom_boxplot(width=1, color="black", alpha=0.2) + theme(legend.position = 'none')  #+ stat_summary(fun = "mean", colour = "blue")
+        ) + geom_boxplot(width=.2, color="black", alpha=0.2) + theme(legend.position = 'none')  #+ stat_summary(fun = "mean", colour = "blue")
         plt_list[[i]] = plt
     }
     plt_list
@@ -218,7 +218,7 @@ vlnplot_for_plasmids <- function(seurat_obj, df_guides, perturbed_cells_by_guide
             sort = F, 
             ncol = 1,    
         ) + 
-        geom_boxplot(width=1, color="black", alpha=0.2) + 
+        geom_boxplot(width=0.2, color="black", alpha=0.2) + 
         theme(legend.position = 'none', plot.subtitle = element_text(hjust = 0.5)) +
         labs(subtitle = paste0("Guides: ", guides_on_plasmid[1], ",b"))
 
@@ -322,3 +322,35 @@ get_all_perturbed_cells_by_guide <- function(seurat_obj_libs) {
 }
 
 
+get_neighboring_genes <- function(bm, df_target_coords, genes_in_assay, target_upstream_range = 1000000, target_downstream_range = 1000000) {
+    attributes <- c("ensembl_gene_id","chromosome_name", "start_position","end_position", "strand", "hgnc_symbol", "refseq_ncrna", "refseq_ncrna_predicted" )
+    filters    <- c("chromosome_name","start","end")
+    target_neigbors_list = list()
+
+    for(i in 1:nrow(df_target_coords)) {
+        target = df_target_coords[i, ]
+        chr = target$chromosome
+        start = target$start_position - target_upstream_range
+        end   = target$end_position + target_downstream_range
+        cat(blue(target$hgnc_symbol, chr, start, end,"\n"))
+        
+        values <- list(chromosome=chr, start = start, end = end)
+        neighbor_genes <- getBM(attributes=attributes, filters=filters, values=values, mart=mart)
+        n_neighbors   = length(unique(neighbor_genes$ensembl_gene_id))
+        select_non_na = !is.na(neighbor_genes$hgnc_symbol) & (neighbor_genes$hgnc_symbol != "")
+        neighbor_genes <- neighbor_genes[select_non_na, ]
+        n_neighbors_w_names = length(unique(neighbor_genes$hgnc_symbol))
+        #cat(blue(n_neighbors, "neigbors found,", n_neighbors_w_names, "have a name, "))
+
+        if(n_neighbors_w_names > 0){        
+            dummy = as.vector(unique(neighbor_genes$hgnc_symbol))
+            # some neighbors are not in the cellranger reference. Remove those.
+            select_genes_in_assay = dummy %in% genes_in_assay
+            #cat(blue(sum(select_genes_in_assay), " found in assay"))
+            # print(target_neigbors_list)
+            target_neigbors_list[[target$hgnc_symbol]] = dummy[select_genes_in_assay]
+            #cat(target_neigbors_list[[target$hgnc_symbol]], "\n")
+        }else { print("") }
+    }
+    target_neigbors_list
+}

@@ -60,6 +60,50 @@ mark_guide_pos_target_neg <- function(seurat_obj, perturbed_cells_by_guide, the_
 
 
 # Mark cells that are positive for given guides as target_positive, all others as target_negative
+mark_target_pos_neg_TEST <- function(
+    seurat_obj, 
+    perturbed_cells_by_guide, 
+    guides, 
+    print_counts = T, 
+    pos_label = "target_positive", 
+    neg_label = "target_negative",
+    guide_labels = NULL
+) {
+    all_cells = Cells(seurat_obj)
+    perturbed_cells = c()
+    dummy_perturbed = c()
+    
+    Idents(seurat_obj) <- neg_label
+    for(i in seq_along(guides)) {
+        guide = guides[i]
+
+        dummy_perturbed = unlist(perturbed_cells_by_guide[[guide]])
+        #perturbed_cells = union(perturbed_cells, dummy_perturbed)    
+        cat(guide," ", length(perturbed_cells), "\n")
+
+        if(!is.null(guide_labels)) {
+            label = guide_labels[i]            
+        } else {
+            label = pos_label
+        }
+
+        if(length(perturbed_cells) > 0) {
+               seurat_obj <- SetIdent(seurat_obj, cells = perturbed_cells, value = label)
+            }
+    }
+    #unperturbed_cells = unlist(setdiff(all_cells, perturbed_cells))
+
+    if(print_counts) {
+        n_gplus   = length(perturbed_cells)
+        n_gminus = length(unperturbed_cells)    
+        cat(blue("Guide+ =",n_gplus, "; Guide- =", n_gminus, "\n"))
+    }
+    
+    seurat_obj
+}
+
+
+# Mark cells that are positive for given guides as target_positive, all others as target_negative
 mark_target_pos_neg <- function(
     seurat_obj, 
     perturbed_cells_by_guide, 
@@ -257,7 +301,7 @@ ridgeplot_for_targets <- function(seurat_obj, df_guide, perturbed_cells_by_guide
 }
 
 # Get perturbed cells
-get_perturbed_cells <- function(seurat_obj, df_thresholds, donor_id = NULL) {
+get_perturbed_cells <- function(seurat_obj = NULL, df_thresholds = NULL, donor_id = NULL) {
     if(! is.null(donor_id)) {
         seurat_obj = subset(seurat_obj, subset = donor == donor_id)
     }
@@ -283,11 +327,10 @@ get_perturbed_cells <- function(seurat_obj, df_thresholds, donor_id = NULL) {
             sgrna_counts = seurat_lib[['sgRNA']]@counts
             select_perturbed = sgrna_counts[guide, cells_in_lib] >= threshold
             perturbed_cells_in_library = cells_in_lib[select_perturbed]
-            #cat(length(cells_in_lib), "in", lib, guide, length(perturbed_cells_in_library), "cells >", threshold, "\n")                    
+            #cat(length(cells_in_lib), "in", lib, guide, length(perturbed_cells_in_library), "cells >", threshold, "\n")
             if(!is.na(threshold)) {
-             perturbed_cells_in_all_libs = append(perturbed_cells_in_all_libs, perturbed_cells_in_library)
+                perturbed_cells_in_all_libs = append(perturbed_cells_in_all_libs, perturbed_cells_in_library)
             }
-
         }
         perturbed_cells_by_guide[[i]] = perturbed_cells_in_all_libs
     }
@@ -297,12 +340,13 @@ get_perturbed_cells <- function(seurat_obj, df_thresholds, donor_id = NULL) {
 
 
 # This function is somewhat redundant. It runs on a list of Seurat objects
-get_all_perturbed_cells_by_guide <- function(seurat_obj_libs) {
+get_all_perturbed_cells_by_guide <- function(seurat_obj_libs = NULL, df_thresholds = NULL) {
     perturbed_cells_by_guide = list()
 
     for(i in 1:nrow(df_thresholds)){  
         perturbed_cells_in_all_libs = list()
         guide = df_thresholds$guide[i]
+        libraries = names(seurat_obj_libs)
         # Loop over libraries
         for(lib in libraries){        
             seurat_lib = seurat_obj_libs[[lib]]
@@ -313,7 +357,9 @@ get_all_perturbed_cells_by_guide <- function(seurat_obj_libs) {
             select_perturbed = sgrna_counts[guide, cells_in_lib] >= threshold
             perturbed_cells_in_library = cells_in_lib[select_perturbed]
             #cat(length(cells_in_lib), "in", lib, guide, length(perturbed_cells_in_library), "cells >", threshold, "\n")        
-            perturbed_cells_in_all_libs = append(perturbed_cells_in_all_libs, perturbed_cells_in_library)
+            if(!is.na(threshold)) {
+                perturbed_cells_in_all_libs = append(perturbed_cells_in_all_libs, perturbed_cells_in_library)
+            }
         }
         perturbed_cells_by_guide[[i]] = perturbed_cells_in_all_libs
     }

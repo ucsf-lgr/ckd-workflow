@@ -119,7 +119,9 @@ mark_target_pos_neg <- function(
     for(guide in guides) {
         dummy_perturbed = unlist(perturbed_cells_by_guide[[guide]])
         perturbed_cells = union(perturbed_cells, dummy_perturbed)    
-        cat(guide," ", length(perturbed_cells), "\n")
+        if(print_counts) {
+            cat(guide," ", length(perturbed_cells), "\n")
+        }
     }
 
     unperturbed_cells = unlist(setdiff(all_cells, perturbed_cells))
@@ -132,7 +134,9 @@ mark_target_pos_neg <- function(
     if(print_counts) {
         n_gplus   = length(perturbed_cells)
         n_gminus = length(unperturbed_cells)    
-        cat(blue("Guide+ =",n_gplus, "; Guide- =", n_gminus, "\n"))
+        if(print_counts) {
+            cat(blue("Guide+ =",n_gplus, "; Guide- =", n_gminus, "\n"))
+        }
     }
     
     seurat_obj

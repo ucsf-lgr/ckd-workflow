@@ -372,6 +372,8 @@ get_all_perturbed_cells_by_guide <- function(seurat_obj_libs = NULL, df_threshol
 }
 
 
+
+
 get_neighboring_genes <- function(bm, df_target_coords, genes_in_assay, target_upstream_range = 1000000, target_downstream_range = 1000000) {
     attributes <- c("ensembl_gene_id","chromosome_name", "start_position","end_position", "strand", "hgnc_symbol", "refseq_ncrna", "refseq_ncrna_predicted" )
     filters    <- c("chromosome_name","start","end")
@@ -403,4 +405,28 @@ get_neighboring_genes <- function(bm, df_target_coords, genes_in_assay, target_u
         }else { print("") }
     }
     target_neigbors_list
+}
+
+
+# Split perturbed (or control) cells into random replicate groups for diffex testing
+create_random_replicates <- function(seurat_obj, perturbed_id_list, control_id_list) {
+    perturbed_cells = WhichCells(seurat_obj, idents = "guide_positive")
+    control_cells   = WhichCells(seurat_obj, idents = "guide_negative")
+    n_pos = length(perturbed_cells)
+    n_neg = length(control_cells)
+    perturbed_labels = sample(perturbed_id_list, n_pos, replace = TRUE)
+    control_labels = sample(control_id_list, n_neg, replace = TRUE)
+    seurat_obj = SetIdent(seurat_obj, cells = perturbed_cells, value = perturbed_labels)
+    seurat_obj = SetIdent(seurat_obj, cells = control_cells, value = control_labels)
+
+    # double check replicate labels
+    if(
+        any(WhichCells(seurat_obj, idents = perturbed_id_list) != perturbed_cells) |
+        any(WhichCells(seurat_obj, idents = control_id_list) != control_cells)
+    ) {
+        cat(red("Failed assignment!!! "))
+    } else {
+        cat(green("Random replicate creation OK"))
+    }
+    seurat_obj
 }

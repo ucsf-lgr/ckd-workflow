@@ -1,4 +1,72 @@
 # Helper functions
+library(edgeR)
+
+# Mark cells that are positive ONLY for a given construct/vector/plasmid, 
+# and negative for a target.
+mark_vector_pos_target_neg <- function(
+    seurat_obj, 
+    perturbed_cells_by_guide, 
+    guides_on_vector, 
+    guides4target, 
+    print_counts = T,
+    pos_label = "vector_positive", 
+    neg_label = "target_negative"
+) {
+    all_cells = Cells(seurat_obj)
+    target_positive_cells = c()
+    dummy_perturbed = c()
+
+    Idents(seurat_obj) <- "vector_B"
+    # Select all cells in which the target of the guide has been perturbed
+    # by any guide in guides4target list.
+    for(guide in guides4target) {
+        dummy_perturbed = unlist(perturbed_cells_by_guide[[guide]])
+        target_positive_cells = union(target_positive_cells, dummy_perturbed)    
+        #cat(guide," ", length(target_positive_cells), "\n")
+    }
+
+    target_negative_cells = unlist(setdiff(all_cells, target_positive_cells))
+    if(length(target_negative_cells) > 0) {
+        seurat_obj <- SetIdent(seurat_obj, cells = target_negative_cells, value = neg_label) 
+    }
+
+    # Now find the cells with the guides on the vector, then mark them
+# 
+    vector_positive_cells = c()
+    dummy_perturbed = c()
+    
+    for(guide in guides_on_vector) {
+        dummy_perturbed = unlist(perturbed_cells_by_guide[[guide]])
+        vector_positive_cells = union(vector_positive_cells, dummy_perturbed)    
+        if(print_counts) {
+            cat(guide," ", length(dummy_perturbed), "\n")
+        }
+    }
+
+    if(length(vector_positive_cells) > 0) {
+        seurat_obj <- SetIdent(seurat_obj, cells = vector_positive_cells, value = pos_label) 
+    } 
+
+
+    
+        print(guides_on_vector)
+        print(guides4target)
+        df_tally = as.data.frame(table(Idents(seurat_obj)))
+
+        n_vec_positive   = length(vector_positive_cells)
+        n_target_neg     = length(target_negative_cells)   
+        n_all            = length(all_cells)
+
+        stopifnot(df_tally$vector_positive == n_vec_positive + 1)
+        stopifnot(df_tally$target_negative == n_target_neg)
+        stopifnot(sum(df_tally$Freq) == n_all)
+    
+    if(print_counts) {
+        cat(blue("Vector+ =",n_vec_positive, "; Target- =", n_target_neg, "; All =", n_all, "\n"))
+    }
+    seurat_obj
+
+}
 
 # Mark cells that are positive ONLY for a given guide (not construct), and negative for a target
 # The purpose is to run diffex analysis for each guide seperately.
@@ -429,4 +497,52 @@ create_random_replicates <- function(seurat_obj, perturbed_id_list, control_id_l
         cat(green("Random replicate creation OK"))
     }
     seurat_obj
+}
+
+
+edgeR_diffex <- function(seurat, df_cell_counts, is_de) {
+    y = Seurat2PB(seurat, sample = "donor", cluster = 'cluster')
+
+    # Add target+/- counts to df_cell_counts
+    if(!is_de) {
+        df_dummy = as.data.frame(y$counts[target,])
+        colnames(df_dummy) = "count"
+        df_dummy$target <- target
+        df_dummy$label = rownames(df_dummy)
+        df_samples = y$samples
+        df_dummy = merge(df_dummy, df_samples, by = 0)
+        df_cell_counts = rbind(df_cell_counts, df_dummy)
+    }
+
+    # Filter out small samples, lowly expressed genes.
+    keep.samples <- y$samples$lib.size > 5e4
+    table(keep.samples)
+    y <- y[, keep.samples]
+    keep.genes <- filterByExpr(y, group=y$samples$cluster, min.count=10, min.total.count=20)
+    table(keep.genes)
+    y <- normLibSizes(y)
+
+    # Create design matrix
+    donor <- factor(y$samples$sample)
+    cluster <- as.factor(y$samples$cluster)
+    design <- model.matrix(~ cluster + donor)
+    colnames(design) <- gsub("donor", "", colnames(design))
+    colnames(design)[1] <- "Int"
+
+    ncls <- nlevels(cluster)
+    contr <- rbind( matrix(1/(1-ncls), ncls, ncls), matrix(0, ncol(design)-ncls, ncls) )
+    diag(contr) <- 1
+    contr[1,] <- 0
+    rownames(contr) <- colnames(design)
+    colnames(contr) <- paste0("cluster", levels(cluster))
+    
+    # Estimate dispersion
+    y <- estimateDisp(y, design, robust=TRUE)
+    y$common.dispersion
+
+    # Fit
+    fit <- glmQLFit(y, design, robust=TRUE)
+    qlf <- glmQLFTest(fit, contrast=contr[,1])
+    
+    markers
 }

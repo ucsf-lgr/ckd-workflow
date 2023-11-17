@@ -1,3 +1,7 @@
+### Adapted from 
+### https://github.com/josephreplogle/guide_calling/blob/master/guide_calling.py
+### 
+
 import pandas as pd
 import numpy as np
 import csv
@@ -26,8 +30,6 @@ def pgmix(data):
     data = np.log2(np.array(data))
     data = data.reshape(-1,1) 
     
-    ##this loop checks that the model converges 
-    ##and that the Poisson distribution is the lower component 
     i=0
     gmm_x = np.linspace(-2,max(data)+2,1000)
     while i==0:
@@ -43,7 +45,6 @@ def pgmix(data):
             elif model.distributions[0].parameters[0]>model.distributions[1].parameters[0]:
                     i=0
     
-    ##append positive calls to table
     if model.distributions[0].name == 'PoissonDistribution':
         return model.predict_proba(data)
     else:

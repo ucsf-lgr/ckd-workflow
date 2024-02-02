@@ -22,13 +22,15 @@ mark_vector_pos_target_neg <- function(
     for (guide in guides4target) {
         dummy_perturbed <- unlist(perturbed_cells_by_guide[[guide]])
         target_positive_cells <- union(target_positive_cells, dummy_perturbed)
-        # cat(guide," ", length(target_positive_cells), "\n")
     }
 
     target_negative_cells <- unlist(setdiff(all_cells, target_positive_cells))
     if (length(target_negative_cells) > 0) {
         seurat_obj <-
-            SetIdent(seurat_obj, cells = target_negative_cells, value = neg_label)
+            SetIdent(
+                seurat_obj,
+                cells = target_negative_cells, value = neg_label
+            )
     }
 
     # Now find the cells with the guides on the vector, then mark them
@@ -46,7 +48,10 @@ mark_vector_pos_target_neg <- function(
 
     if (length(vector_positive_cells) > 0) {
         seurat_obj <-
-            SetIdent(seurat_obj, cells = vector_positive_cells, value = pos_label)
+            SetIdent(
+                seurat_obj,
+                cells = vector_positive_cells, value = pos_label
+            )
     }
 
 

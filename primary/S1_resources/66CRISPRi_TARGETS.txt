@@ -1,0 +1,71 @@
+gene            	guide1      	guide2      	alias    	subclass   	class     	gene_or_rsid 	label       	diffexed_gene
+CD13            	CD13-1a     	CD13-1b     	ANPEP    	tss        	targeting 	ANPEP        	Control TSS 	ANPEP
+CD55            	CD55-1a     	CD55-1b     	CD55     	tss        	targeting 	CD55         	Control TSS 	CD55
+CD73            	CD73-1a     	CD73-1b     	NT5E     	tss        	targeting 	NT5E         	Control TSS 	NT5E
+FUBP1           	FUBP1-1a    	FUBP1-1b    	FUBP1    	tss        	targeting 	FUBP1        	Control TSS 	FUBP1
+C15orf40        	C15orf40-1a 	C15orf40-1b 	C15orf40 	tss        	targeting 	C15orf40     	Control TSS 	C15orf40
+MAFF            	MAFF-1a     	MAFF-1b     	MAFF     	tss        	targeting 	MAFF         	Control TSS 	MAFF
+Enh-23-8-FTH1   	FTH1-1a     	FTH1-1b     	FTH1     	de_control 	targeting 	FTH1         	Control DE  	FTH1
+Enh-23-8-FTH1   	FTH1-2a     	FTH1-2b     	FTH1     	de_control 	targeting 	FTH1         	Control DE  	FTH1
+Enh37-10-PLIN3  	PLIN3-1a    	PLIN3-1b    	PLIN3    	de_control 	targeting 	PLIN3        	Control DE  	PLIN3
+Enh37-10-PLIN3  	PLIN3-2a    	PLIN3-2b    	PLIN3    	de_control 	targeting 	PLIN3        	Control DE  	PLIN3
+Enh-8-2-TKT     	TKT-1a      	TKT-1b      	TKT      	de_control 	targeting 	TKT          	Control DE  	TKT
+Enh-8-2-TKT     	TKT-2a      	TKT-2b      	TKT      	de_control 	targeting 	TKT          	Control DE  	TKT
+Enh-29-9-LGALS3 	LGALS3-1a   	LGALS3-1b   	LGALS3   	de_control 	targeting 	LGALS3       	Control DE  	LGALS3
+Enh-29-9-LGALS3 	LGALS3-2a   	LGALS3-2b   	LGALS3   	de_control 	targeting 	LGALS3       	Control DE  	LGALS3
+Enh-42-8-CSTB   	CSTB-1a     	CSTB-1b     	CSTB     	de_control 	targeting 	CSTB         	Control DE  	CSTB
+Enh-42-8-CSTB   	CSTB-2a     	CSTB-2b     	CSTB     	de_control 	targeting 	CSTB         	Control DE  	CSTB
+Enh-13-1-CTSB   	CTSB-1a     	CTSB-1b     	CTSB     	de_control 	targeting 	CTSB         	Control DE  	CTSB
+Enh-13-1-CTSB   	CTSB-2a     	CTSB-2b     	CTSB     	de_control 	targeting 	CTSB         	Control DE  	CTSB
+Enh-20-9-KLF6   	KLF6-1a     	KLF6-1b     	KLF6     	de_control 	targeting 	KLF6         	Control DE  	KLF6
+Enh-20-9-KLF6   	KLF6-2a     	KLF6-2b     	KLF6     	de_control 	targeting 	KLF6         	Control DE  	KLF6
+rs2823139       	DE1-1a      	DE1-1b      	DE1      	ckd_de     	targeting 	rs2823139    	CKD DE      	
+rs2823139       	DE1-2a      	DE1-2b      	DE1      	ckd_de     	targeting 	rs2823139    	CKD DE      	
+rs7642977       	DE2-1a      	DE2-1b      	DE2      	ckd_de     	targeting 	rs7642977    	CKD DE      	
+rs7642977       	DE2-2a      	DE2-2b      	DE2      	ckd_de     	targeting 	rs7642977    	CKD DE      	
+rs78581838      	DE3-1a      	DE3-1b      	DE3      	ckd_de     	targeting 	rs78581838   	CKD DE      	
+rs78581838      	DE3-2a      	DE3-2b      	DE3      	ckd_de     	targeting 	rs78581838   	CKD DE      	
+rs7707989       	DE4-1a      	DE4-1b      	DE4      	ckd_de     	targeting 	rs7707989    	CKD DE      	CCNB1
+rs7707989       	DE4-2a      	DE4-2b      	DE4      	ckd_de     	targeting 	rs7707989    	CKD DE      	CCNB1
+rs527616        	DE5-1a      	DE5-1b      	DE5      	ckd_de     	targeting 	rs527616     	CKD DE      	CHST9
+rs527616        	DE5-2a      	DE5-2b      	DE5      	ckd_de     	targeting 	rs527616     	CKD DE      	CHST9
+rs10283362      	DE6-1a      	DE6-1b      	DE6      	ckd_de     	targeting 	rs10283362   	CKD DE      	NDRG1
+rs10283362      	DE6-2a      	DE6-2b      	DE6      	ckd_de     	targeting 	rs10283362   	CKD DE      	NDRG1
+rs34861762      	DE7-1a      	DE7-1b      	DE7      	ckd_de     	targeting 	rs34861762   	CKD DE      	STC1
+rs34861762      	DE7-2a      	DE7-2b      	DE7      	ckd_de     	targeting 	rs34861762   	CKD DE      	STC1
+rs34861762      	DE7-1a      	DE7-1b      	DE7      	ckd_de     	targeting 	rs34861762   	CKD DE      	LOXL2
+rs34861762      	DE7-2a      	DE7-2b      	DE7      	ckd_de     	targeting 	rs34861762   	CKD DE      	LOXL2
+rs34861762      	DE7-1a      	DE7-1b      	DE7      	ckd_de     	targeting 	rs34861762   	CKD DE      	ADAM28
+rs34861762      	DE7-2a      	DE7-2b      	DE7      	ckd_de     	targeting 	rs34861762   	CKD DE      	ADAM28
+rs16874072      	DE8-1a      	DE8-1b      	DE8      	ckd_de     	targeting 	rs16874072   	CKD DE      	PPARGC1A
+rs16874072      	DE8-2a      	DE8-2b      	DE8      	ckd_de     	targeting 	rs16874072   	CKD DE      	PPARGC1A
+rs881858        	DE9-1a      	DE9-1b      	DE9      	ckd_de     	targeting 	rs881858     	CKD DE      	
+rs881858        	DE9-2a      	DE9-2b      	DE9      	ckd_de     	targeting 	rs881858     	CKD DE      	
+rs4669722       	DE10-1a     	DE10-1b     	DE10     	ckd_de     	targeting 	rs4669722    	CKD DE      	PDIA6
+rs4669722       	DE10-2a     	DE10-2b     	DE10     	ckd_de     	targeting 	rs4669722    	CKD DE      	PDIA6
+rs76839935      	DE11-1a     	DE11-1b     	DE11     	ckd_de     	targeting 	rs76839935   	CKD DE      	XRCC2
+rs76839935      	DE11-2a     	DE11-2b     	DE11     	ckd_de     	targeting 	rs76839935   	CKD DE      	XRCC2
+rs76839935      	DE11-1a     	DE11-1b     	DE11     	ckd_de     	targeting 	rs76839935   	CKD DE      	XRCC2
+rs76839935      	DE11-2a     	DE11-2b     	DE11     	ckd_de     	targeting 	rs76839935   	CKD DE      	XRCC2
+rs6839100       	DE12-1a     	DE12-1b     	DE12     	ckd_de     	targeting 	rs6839100    	CKD DE      	SHROOM3
+rs6839100       	DE12-2a     	DE12-2b     	DE12     	ckd_de     	targeting 	rs6839100    	CKD DE      	SHROOM3
+rs6839100       	DE12-1a     	DE12-1b     	DE12     	ckd_de     	targeting 	rs6839100    	CKD DE      	CXCL10
+rs6839100       	DE12-2a     	DE12-2b     	DE12     	ckd_de     	targeting 	rs6839100    	CKD DE      	CXCL10
+rs6839100       	DE12-1a     	DE12-1b     	DE12     	ckd_de     	targeting 	rs6839100    	CKD DE      	CXCL11
+rs6839100       	DE12-2a     	DE12-2b     	DE12     	ckd_de     	targeting 	rs6839100    	CKD DE      	CXCL11
+rs11154336      	DE13-1a     	DE13-1b     	DE13     	ckd_de     	targeting 	rs11154336   	CKD DE      	CENPW
+rs11154336      	DE13-2a     	DE13-2b     	DE13     	ckd_de     	targeting 	rs11154336   	CKD DE      	CENPW
+rs4720089       	DE14-1a     	DE14-1b     	DE14     	ckd_de     	targeting 	rs4720089    	CKD DE      	FKBP9
+rs4720089       	DE14-2a     	DE14-2b     	DE14     	ckd_de     	targeting 	rs4720089    	CKD DE      	FKBP9
+rs4720089       	DE14-1a     	DE14-1b     	DE14     	ckd_de     	targeting 	rs4720089    	CKD DE      	CCNG2
+rs4720089       	DE14-2a     	DE14-2b     	DE14     	ckd_de     	targeting 	rs4720089    	CKD DE      	CCNG2
+rs2979488       	DE15-1a     	DE15-1b     	DE15     	ckd_de     	targeting 	rs2979488    	CKD DE      	RBPMS
+rs2979488       	DE15-2a     	DE15-2b     	DE15     	ckd_de     	targeting 	rs2979488    	CKD DE      	RBPMS
+rs2661503       	DE16-1a     	DE16-1b     	DE16     	ckd_de     	targeting 	rs2661503    	CKD DE      	PKHD1
+rs2661503       	DE16-2a     	DE16-2b     	DE16     	ckd_de     	targeting 	rs2661503    	CKD DE      	PKHD1
+rs2661503       	DE16-1a     	DE16-1b     	DE16     	ckd_de     	targeting 	rs2661503    	CKD DE      	MCM3
+rs2661503       	DE16-2a     	DE16-2b     	DE16     	ckd_de     	targeting 	rs2661503    	CKD DE      	MCM3
+rs2661503       	DE16-1a     	DE16-1b     	DE16     	ckd_de     	targeting 	rs2661503    	CKD DE      	TFAP2B
+rs2661503       	DE16-2a     	DE16-2b     	DE16     	ckd_de     	targeting 	rs2661503    	CKD DE      	TFAP2B
+rs10224210      	DE17-1a     	DE17-1b     	DE17     	ckd_de     	targeting 	rs10224210   	CKD DE      	XRCC2
+rs10224210      	DE17-2a     	DE17-2b     	DE17     	ckd_de     	targeting 	rs10224210   	CKD DE      	XRCC2

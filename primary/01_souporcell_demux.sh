@@ -1,7 +1,7 @@
 #!/bin/bash
-PATH_TO_OUTS="/home/vsevim/prj/1012-ckd/S1/analysis/primary/cellranger/Screen1_66guides_L1/outs"
+PATH_TO_OUTS="S1/analysis/primary/cellranger/Screen1_66guides_L1/outs"
 PATH_TO_BC="${PATH_TO_OUTS}/filtered_feature_bc_matrix"
-PATH_TO_REF="/home/vsevim/prj/refs/refdata-gex-GRCh38-2020-A/fasta/genome.fa"
+PATH_TO_REF="refs/refdata-gex-GRCh38-2020-A/fasta/genome.fa"
 num_threads_to_use=40
 output_dir_name=soupor_L1
 num_clusters=4

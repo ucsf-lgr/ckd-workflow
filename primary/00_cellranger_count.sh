@@ -3,24 +3,22 @@
 #echo "Update the dirs etc to run this script!"
 #exit -1
 
-TRANSCRIPTOME="/home/vsevim/prj/refs/refdata-gex-GRCh38-2020-A"
-FEATURE_REF="guide_reference.csv"
-cellranger=/home/sfederman/programs/cellranger/cellranger-7.0.0/cellranger
+TRANSCRIPTOME="refs/refdata-gex-GRCh38-2020-A"
+FEATURE_REF="S1_resources/guide_reference.csv"
+cellranger=cellranger/cellranger-7.0.0/cellranger
 
-cellranger_out_path="/home/vsevim/prj/1012-ckd/S1/analysis/cellranger"
-data_path="/home/vsevim/prj/1012-ckd/S1/data/"
-script_path="/home/vsevim/prj/1012-ckd/S1/scripts"
-log_path="/home/vsevim/prj/1012-ckd/S1/scripts/logs"
-config_path="/home/vsevim/prj/1012-ckd/S1/scripts/library_csv"
-decsription="CKD project Screen 1perturb-seq run with 66 guides, 
-             4 of which are NT controls. Nov 7 2022"
+cellranger_out_path="S1/analysis/cellranger"
+log_path="S1/scripts/logs"
+config_path="S1/scripts/library_csv"
+decsription="CKD project Screen 1 perturb-seq run with 
+             66 guides, 4 of which are NT controls."
 
 
 SCREEN="Screen1_66guides"
 LOG="$ID.log"
 ERR="$ID.err"
-
-for ID in L1 #L2 L3 L4
+        
+for ID in L1 L2 L3 L4
 do
         LOG="$ID.log"
         ERR="$ID.err"

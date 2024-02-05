@@ -3,7 +3,7 @@ Repository for "Variants in tubule epithelial regulatory elements mediate most h
 
 If you'd like to run the notebooks, install the included libraries, and update all the file paths in them.
 
-## Primary 
+## Primary analysis
 * 00_cellranger_count 
 Runs Cellranger count on the fastq files. 
 
@@ -28,7 +28,7 @@ Output
 - Cells labeled by donor IDs
 
 
-## Secondary
+## Secondary analysis
 * **00_QC.R.ipynb**: 
 Single cell QC to eliminate doublets, low-count cells, and to inspect the data.
 

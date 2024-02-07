@@ -3,6 +3,8 @@ Repository for "Variants in tubule epithelial regulatory elements mediate most h
 
 If you'd like to run the notebooks, install the included libraries, and update all the file paths in them.
 
+The workflow requires Seurat_4.3. Other library versions are listed in R_session_info.txt
+
 ## Primary analysis
 * 00_cellranger_count 
 Runs Cellranger count on the fastq files. 

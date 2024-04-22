@@ -1,0 +1,3 @@
+fastqs,sample,library_type
+S1/data/fastq_files,L2_GEX,Gene Expression
+S1/data/fastq_files,L2_CRISPR,CRISPR Guide Capture
